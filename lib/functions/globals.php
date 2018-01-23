@@ -25,6 +25,10 @@ function bootstrap() {
 /**
  * @desc Get base directory path for plugin
  * @since 0.0.1
+ *
+ * @var string $path Optional path to append to base directory
+ *
+ * @return string Directory path with optional appended
  */
 function get_plugin_dir_path( $path = ''){
 
