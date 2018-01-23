@@ -11,7 +11,7 @@ if ( ! defined( 'WPINC' ) ) {
 class Hub {
 
 
-	public function __construct(){
+	public function __construct() {
 
 	} // End __construct
 
@@ -20,7 +20,7 @@ class Hub {
 	* @desc Add custom post types
 	* @since 0.0.1
 	*/
-	protected function add_post_types(){
+	protected function add_post_types() {
 
 	} // End add_post_types
 
@@ -29,7 +29,7 @@ class Hub {
 	* @desc Add shortcodes
 	* @since 0.0.1
 	*/
-	protected function add_shortcodes(){
+	protected function add_shortcodes() {
 
 	} // End add_shortcodes
 
@@ -38,7 +38,7 @@ class Hub {
 	* @desc Add widgets
 	* @since 0.0.1
 	*/
-	protected function add_widgets(){
+	protected function add_widgets() {
 
 	} // End add_widgets
 
@@ -47,7 +47,7 @@ class Hub {
 	* @desc Add public style and scripts
 	* @since 0.0.1
 	*/
-	protected function enqueue_scripts(){
+	protected function enqueue_scripts() {
 
 	} // End enqueue_scripts
 
