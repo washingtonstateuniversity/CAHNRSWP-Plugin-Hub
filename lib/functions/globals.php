@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 0.0.1
  */
 function bootstrap() {
-	
+
 	include_once get_plugin_dir_path( 'lib/classes/class-hub.php' );
 
 	$cahnrswp_hub = new Hub();
@@ -30,10 +30,10 @@ function bootstrap() {
  *
  * @return string Directory path with optional appended
  */
-function get_plugin_dir_path( $path = ''){
+function get_plugin_dir_path( $path = '' ) {
 
 	$dir = plugin_dir_path( dirname( __DIR__ ) );
-	
+
 	$dir .= $path;
 
 	return $dir;

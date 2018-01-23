@@ -3,7 +3,7 @@
 Plugin Name: CAHNRSWP Hub
 Version: 0.0.1
 Description: News Content Hub for CAHNRS Sites
-Author: CAHNRS Communications, Lesa McPeak, Danial Bleile 
+Author: CAHNRS Communications, Lesa McPeak, Danial Bleile
 Author URI: https://cahnrs.wsu.edu/communications
 Plugin URI: https://github.com/washingtonstateuniversity/CAHNRSWP-Plugin-Hub
 Text Domain: cahnrswp-plugin-hub
