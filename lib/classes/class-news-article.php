@@ -8,7 +8,7 @@ if ( ! defined( 'WPINC' ) ) {
 } // End if
 
 /**
- * @desc  Abstract Article class
+ * @desc  Abstract News Article class
  * @since 0.0.1
  */
 class News_Article extends Article {
