@@ -12,6 +12,6 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 0.0.1
  */
 class News_Article extends Article {
-	
-	
+
+
 }
