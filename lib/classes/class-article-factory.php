@@ -14,10 +14,12 @@ if ( ! defined( 'WPINC' ) ) {
 class Article_Factory {
 
 	public function get_article( $type ) {
+		
+		include_once get_plugin_dir_path( 'lib/classes/class-article.php' );
 
 		switch ( $type ) {
 
-			case 'new-article':
+			case 'news-article':
 				$article = $this->get_news_article();
 				break;
 			default:

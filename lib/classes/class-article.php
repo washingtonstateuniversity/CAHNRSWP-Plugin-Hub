@@ -17,12 +17,18 @@ class Article {
 	protected $title = '';
 
 	// @var string Article excerpt
-	protected $except = '';
+	protected $excerpt = '';
 
 	// @var string Article content
 	protected $content = '';
 
+	
+	protected $url = '';
+	
 
+	protected $img = '';
+	
+	
 	/**
 	 * @desc Get article title
 	 * @since 0.0.1
@@ -42,6 +48,18 @@ class Article {
 	public function get_excerpt() {
 
 		return $this->excerpt;
+
+	} //end get_excerpt
+	
+	public function get_url() {
+
+		return $this->url;
+
+	} //end get_excerpt
+	
+	public function get_img() {
+
+		return $this->img;
 
 	} //end get_excerpt
 
