@@ -28,6 +28,8 @@ class Article {
 
 	protected $img = '';
 	
+	protected $fbadmin = '';
+	
 	
 	/**
 	 * @desc Get article title
@@ -55,13 +57,19 @@ class Article {
 
 		return $this->url;
 
-	} //end get_excerpt
+	} //end get_url
 	
 	public function get_img() {
 
 		return $this->img;
 
-	} //end get_excerpt
+	} //end get_img
+	
+	public function get_fbadmin() {
+		
+		return $this->fbadmin;
+		
+	} //end get_fbadmin
 
 	//[TO DO] Add content
 

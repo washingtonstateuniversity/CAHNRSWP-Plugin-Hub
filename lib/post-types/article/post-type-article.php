@@ -57,14 +57,12 @@ class Post_Type_Article  {
 			
 			$unit_name = esc_html( \get_bloginfo( 'name' ) );
 			
+			$fbadmin = $article->get_fbadmin();
+			
 
 			
 			$excerpt = $article->get_excerpt();
-			
-			var_dump( $post_id );
-			
-				var_dump($article);
-			
+						
 			include get_plugin_dir_path( 'lib/displays/social/metadata/metadata.php' );
 			
 		} // End if
