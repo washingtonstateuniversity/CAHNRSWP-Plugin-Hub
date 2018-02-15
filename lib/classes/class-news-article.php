@@ -22,7 +22,6 @@ class News_Article extends Article {
 		
 		$this->url = \get_permalink( $post_id );
 		
-		$this->img = \get_the_post_thumbnail_url( $post_id );
 		$this->img = \get_the_post_thumbnail_url( $post_id, 'full' );
 		
 		//$this->content = \get_the_content( $post_id );
