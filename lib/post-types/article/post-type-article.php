@@ -29,6 +29,20 @@ class Post_Type_Article  {
 	
 	protected function add_filters(){
 		
+		add_filter( 'language_attributes', array( $this, 'add_opengraph' ), 10, 2 );
+		
+		
+	}
+	
+	function add_opengraph ( $output, $doctype ) {
+		
+		if ( is_singular('article') ){
+			
+			$output .= ' prefix="og: http://ogp.me/ns#"';
+			
+		}
+		
+		return $output;
 		
 	}
 	
