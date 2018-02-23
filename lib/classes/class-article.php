@@ -22,15 +22,15 @@ class Article {
 	// @var string Article content
 	protected $content = '';
 
-	
+
 	protected $url = '';
-	
+
 
 	protected $img = '';
-	
+
 	protected $fbadmin = '';
-	
-	
+
+
 	/**
 	 * @desc Get article title
 	 * @since 0.0.1
@@ -52,23 +52,23 @@ class Article {
 		return $this->excerpt;
 
 	} //end get_excerpt
-	
+
 	public function get_url() {
 
 		return $this->url;
 
 	} //end get_url
-	
+
 	public function get_img() {
 
 		return $this->img;
 
 	} //end get_img
-	
+
 	public function get_fbadmin() {
-		
+
 		return $this->fbadmin;
-		
+
 	} //end get_fbadmin
 
 	//[TO DO] Add content
