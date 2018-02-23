@@ -23,7 +23,7 @@ class Post_Type_Article  {
 	
 	protected function add_actions(){
 		
-		add_action( 'wp_head', array( $this, 'add_social_metadata' )  );
+		add_action( 'wp_head', array( $this, 'add_social_metadata' ), 1  );
 		
 	}
 	
