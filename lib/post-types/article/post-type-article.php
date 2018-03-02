@@ -30,6 +30,8 @@ class Post_Type_Article {
 	protected function add_filters() {
 
 		add_filter( 'language_attributes', array( $this, 'add_opengraph' ), 10, 2 );
+		
+		add_filter( 'the_content', array( $this, 'add_socialbuttons' ) );
 
 	}
 
@@ -45,6 +47,39 @@ class Post_Type_Article {
 
 	}
 
+	public function add_socialbuttons( $content ) {
+
+		if ( is_singular( 'article' ) ) {
+
+			include_once get_plugin_dir_path( 'lib/classes/class-article-factory.php' );
+
+			$article_factory = new Article_Factory();
+
+			$article = $article_factory->get_article( 'news-article' );
+
+			$post_id = \get_the_ID();
+
+			$article->set_by_wp_post_id( $post_id );
+
+			$url = $article->get_url();
+
+			$utf_url = urlencode( $url );
+
+			ob_start();
+
+			include get_plugin_dir_path( 'lib/displays/social/buttons/social-buttons.php' );
+
+			$social_buttons = ob_get_clean();
+
+			$content = $content . $social_buttons;
+
+			remove_filter( 'the_content', array( $this, 'add_socialbuttons' ) );
+
+		}
+
+		return $content;
+
+	}
 
 	public function add_social_metadata() {
 
