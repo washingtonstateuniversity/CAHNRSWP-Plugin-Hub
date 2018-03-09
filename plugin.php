@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: CAHNRSWP Hub
-Version: 0.0.2
+Version: 0.0.4
 Description: News Content Hub for CAHNRS Sites
 Author: CAHNRS Communications, Lesa McPeak, Danial Bleile
 Author URI: https://cahnrs.wsu.edu/communications
