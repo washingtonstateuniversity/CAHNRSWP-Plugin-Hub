@@ -30,7 +30,7 @@ class Post_Type_Article {
 	protected function add_filters() {
 
 		add_filter( 'language_attributes', array( $this, 'add_opengraph' ), 10, 2 );
-		
+
 		add_filter( 'the_content', array( $this, 'add_socialbuttons' ) );
 
 	}
@@ -63,7 +63,7 @@ class Post_Type_Article {
 
 			$url = $article->get_url();
 
-			$utf_url = urlencode( $url );
+			$utf_url = rawurlencode( $url );
 
 			ob_start();
 
