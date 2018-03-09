@@ -39,10 +39,10 @@ class News_Article extends Article {
 	*
 	* @return string Post excerpt
 	*/
-	protected function get_excerpt_from_post( $post ){
+	protected function get_excerpt_from_post( $post ) {
 
 		// If this has an excerpt let's just use that
-		if ( isset( $post->post_excerpt ) && ! empty( $post->post_excerpt ) ){
+		if ( isset( $post->post_excerpt ) && ! empty( $post->post_excerpt ) ) {
 
 			// bam done
 			return $post->post_excerpt;
@@ -53,7 +53,7 @@ class News_Article extends Article {
 			$excerpt = $post->post_content;
 
 			// Remove shortcodes but keep text inbetween ]...[/
-			$excerpt = \preg_replace("~(?:\[/?)[^/\]]+/?\]~s", '', $excerpt);
+			$excerpt = \preg_replace('~(?:\[/?)[^/\]]+/?\]~s', '', $excerpt );
 
 			// Remove HTML tags and script/style
 			$excerpt = \wp_strip_all_tags( $excerpt );

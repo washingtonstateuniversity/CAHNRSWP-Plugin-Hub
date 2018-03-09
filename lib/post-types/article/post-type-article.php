@@ -51,13 +51,6 @@ class Post_Type_Article {
 
 		if ( is_singular( 'article' ) ) {
 
-			if ( isset( $_GET['debug'] ) ){
-
-				error_reporting(E_ALL);
-				ini_set('display_errors', 1);
-
-			} // End if
-
 			remove_filter( 'the_content', array( $this, 'add_socialbuttons' ) );
 
 			include_once get_plugin_dir_path( 'lib/classes/class-article-factory.php' );
