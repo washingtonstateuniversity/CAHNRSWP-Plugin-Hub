@@ -53,7 +53,7 @@ class News_Article extends Article {
 			$excerpt = $post->post_content;
 
 			// Remove shortcodes but keep text inbetween ]...[/
-			$excerpt = \preg_replace('~(?:\[/?)[^/\]]+/?\]~s', '', $excerpt );
+			$excerpt = \preg_replace( '~(?:\[/?)[^/\]]+/?\]~s', '', $excerpt );
 
 			// Remove HTML tags and script/style
 			$excerpt = \wp_strip_all_tags( $excerpt );
