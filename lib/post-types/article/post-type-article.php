@@ -63,6 +63,8 @@ class Post_Type_Article {
 
 			$article->set_by_wp_post_id( $post_id );
 
+			$title = $article->get_title();
+
 			$url = $article->get_url();
 
 			$utf_url = rawurlencode( $url );
