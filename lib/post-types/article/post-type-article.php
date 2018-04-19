@@ -31,7 +31,9 @@ class Post_Type_Article {
 
 		add_filter( 'language_attributes', array( $this, 'add_opengraph' ), 10, 2 );
 
-		add_filter( 'the_content', array( $this, 'add_socialbuttons' ) );
+		add_filter( 'the_content', array( $this, 'add_socialbuttons' ), 12 );
+
+		add_filter( 'the_content', array( $this, 'add_mediacontact' ), 11 );
 
 	}
 
@@ -51,7 +53,7 @@ class Post_Type_Article {
 
 		if ( is_singular( 'article' ) ) {
 
-			remove_filter( 'the_content', array( $this, 'add_socialbuttons' ) );
+			remove_filter( 'the_content', array( $this, 'add_socialbuttons' ), 12 );
 
 			include_once get_plugin_dir_path( 'lib/classes/class-article-factory.php' );
 
@@ -114,6 +116,28 @@ class Post_Type_Article {
 			include get_plugin_dir_path( 'lib/displays/social/metadata/metadata.php' );
 
 		} // End if
+
+	}
+
+	public function add_mediacontact( $content ) {
+
+		if ( is_singular( 'article' ) ) {
+
+			remove_filter( 'the_content', array( $this, 'add_mediacontact' ), 11 );
+
+			$post_id = \get_the_ID();
+
+			ob_start();
+
+			include get_plugin_dir_path( 'lib/displays/contact/media/media-contact.php' );
+
+			$mediacontact = ob_get_clean();
+
+			$content = $content . $mediacontact;
+
+		}
+
+		return $content;
 
 	}
 
