@@ -25,6 +25,10 @@ class Post_Type_Article {
 
 		add_action( 'wp_head', array( $this, 'add_social_metadata' ), 1 );
 
+		add_action( 'edit_form_after_title', array( $this, 'add_mediaform' ) );
+
+		add_action ( 'save_post_article', array( $this, 'save_mediaform' ) );
+
 	}
 
 	protected function add_filters() {
@@ -127,17 +131,100 @@ class Post_Type_Article {
 
 			$post_id = \get_the_ID();
 
-			ob_start();
+			$mediacontact = '<span class="media-contact"><span class="media">Media Contact</span>:<br/>';		
 
-			include get_plugin_dir_path( 'lib/displays/contact/media/media-contact.php' );
+			for ( $i=1; $i<6; $i++ ) {
 
-			$mediacontact = ob_get_clean();
+				$firstname = get_post_meta( $post_id, '_firstname_' . $i, true );
+
+				if( ! empty( $firstname ) ) {
+
+					$lastname = get_post_meta( $post_id, '_lastname_' . $i, true );
+			
+					$title = get_post_meta( $post_id, '_title_' . $i, true );
+			
+					$email = get_post_meta( $post_id, '_email_' . $i, true );
+			
+					$phone = get_post_meta( $post_id, '_phone_' . $i, true );
+					
+					ob_start();
+
+					include get_plugin_dir_path( 'lib/displays/contact/media/media-contact.php' );
+
+					$mediacontact .= ob_get_clean();
+
+				}
+
+			}
+
+			$mediacontact .= '</span>';
 
 			$content = $content . $mediacontact;
 
 		}
 
 		return $content;
+
+	}
+
+	public function add_mediaform( $post ) {
+
+		echo '<h2>Media Contacts</h2><style> .hidden-media {display:none;}</style>';
+
+		for($i = 1; $i < 6; $i++ ) {
+			
+			$firstname = get_post_meta( $post->ID, '_firstname_' . $i, true );
+
+			$lastname = get_post_meta( $post->ID, '_lastname_' . $i, true );
+	
+			$title = get_post_meta( $post->ID, '_title_' . $i, true );
+	
+			$email = get_post_meta( $post->ID, '_email_' . $i, true );
+	
+			$phone = get_post_meta( $post->ID, '_phone_' . $i, true );
+
+			$class = ( $i === 1 || ! empty( $firstname ) ) ? '' : 'hidden-media';
+
+			include get_plugin_dir_path( 'lib/displays/contact/media/media-form.php' );
+
+		}
+
+		echo '<button class="add-media">Add Contact</button>';
+
+		echo '<script>';
+
+		include get_plugin_dir_path( 'lib/js/article.js' );
+
+		echo '</script>';
+
+	}
+
+
+	public function save_mediaform( $post_id ) {
+
+		for ( $i=1; $i<6; $i++ ) {
+			
+			$media_keys = array(
+				'_firstname_' .$i,
+				'_lastname_' .$i,
+				'_title_' .$i,
+				'_email_' .$i,
+				'_phone_' .$i,
+			);
+
+			foreach ( $media_keys as $index => $key ) {
+
+				if ( empty( $_POST[ $key ] ) ){
+
+					$value = $_POST[ $key ];
+		 
+					update_post_meta( $post_id, $key, $value );
+		
+				}
+
+			}
+
+		}
 
 	}
 
