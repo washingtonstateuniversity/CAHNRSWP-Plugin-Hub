@@ -131,13 +131,13 @@ class Post_Type_Article {
 
 			$post_id = \get_the_ID();
 
-			$mediacontact = '<span class="media-contact"><span class="media">Media Contact</span>:<br/>';		
+			$media_html = '<span class="media-contact"><span class="media">Media Contact</span>:<br/>';		
 
 			for ( $i=1; $i<6; $i++ ) {
 
 				$firstname = get_post_meta( $post_id, '_firstname_' . $i, true );
 
-				if( ! empty( $firstname ) ) {
+				if ( ! empty( $firstname ) ) {
 
 					$lastname = get_post_meta( $post_id, '_lastname_' . $i, true );
 			
@@ -146,20 +146,38 @@ class Post_Type_Article {
 					$email = get_post_meta( $post_id, '_email_' . $i, true );
 			
 					$phone = get_post_meta( $post_id, '_phone_' . $i, true );
-					
+
+				} else {
+
+					$mediacontact = $this->get_legacy_contact( $post_id, $i );
+
+					$firstname = $mediacontact['firstname'];
+
+					$lastname = $mediacontact['lastname'];
+			
+					$title = $mediacontact['title'];
+			
+					$email = $mediacontact['email'];
+			
+					$phone = $mediacontact['phone'];
+
+				}
+
+				if( ! empty( $firstname ) ) {
+				
 					ob_start();
 
 					include get_plugin_dir_path( 'lib/displays/contact/media/media-contact.php' );
 
-					$mediacontact .= ob_get_clean();
+					$media_html .= ob_get_clean();
 
 				}
 
 			}
 
-			$mediacontact .= '</span>';
+			$media_html .= '</span>';
 
-			$content = $content . $mediacontact;
+			$content = $content . $media_html;
 
 		}
 
@@ -179,13 +197,31 @@ class Post_Type_Article {
 				
 				$firstname = get_post_meta( $post->ID, '_firstname_' . $i, true );
 
-				$lastname = get_post_meta( $post->ID, '_lastname_' . $i, true );
-		
-				$title = get_post_meta( $post->ID, '_title_' . $i, true );
-		
-				$email = get_post_meta( $post->ID, '_email_' . $i, true );
-		
-				$phone = get_post_meta( $post->ID, '_phone_' . $i, true );
+				if ( ! empty( $firstname ) ) {
+
+					$lastname = get_post_meta( $post->ID, '_lastname_' . $i, true );
+			
+					$title = get_post_meta( $post->ID, '_title_' . $i, true );
+			
+					$email = get_post_meta( $post->ID, '_email_' . $i, true );
+			
+					$phone = get_post_meta( $post->ID, '_phone_' . $i, true );
+
+				} else {
+
+					$mediacontact = $this->get_legacy_contact( $post->ID, $i );
+
+					$firstname = $mediacontact['firstname'];
+
+					$lastname = $mediacontact['lastname'];
+			
+					$title = $mediacontact['title'];
+			
+					$email = $mediacontact['email'];
+			
+					$phone = $mediacontact['phone'];
+
+				}
 
 				$class = ( $i === 1 || ! empty( $firstname ) ) ? '' : 'hidden-media';
 
@@ -251,5 +287,52 @@ class Post_Type_Article {
 		}
 
 	}
+
+	protected function get_legacy_contact( $post_id, $i ) {
+
+		$mediacontact = array(
+			'firstname' => '',
+			'lastname'  => '',
+			'title'     => '',
+			'email'     => '',
+			'phone'     => '',
+		);
+
+		$legacy_name = get_post_meta( $post->ID, 'name_' . $i, true );
+
+		$person_info = explode( ', ', $legacy_name );
+
+		$person_names = explode( ' ', $person_info[0] );
+
+		$mediacontact['firstname'] = $person_names[0];
+
+		if ( ! empty( $person_names[1] ) ) {
+
+			$mediacontact['lastname'] = $person_names[1]; 
+
+		}
+
+		if ( ! empty( $person_info[1] ) ) {
+
+			$mediacontact['title'] = $person_info[1]; 
+
+		}
+		
+		$legacy_info = get_post_meta( $post->ID, 'info_' . $i, true );
+
+		$person_contact = explode( ', ', $legacy_info );
+
+		$mediacontact['phone'] = $person_contact[0];
+
+		if ( ! empty( $person_contact[1] ) ) {
+
+			$mediacontact['email'] = $person_contact[1]; 
+
+		}
+
+		return $mediacontact;
+
+	}
+
 
 }
