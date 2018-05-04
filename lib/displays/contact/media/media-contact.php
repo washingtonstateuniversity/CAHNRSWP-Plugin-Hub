@@ -1,0 +1,1 @@
+<span class="author"><a href="mailto:<?php echo $email ?>"><?php echo $firstname . " " . $lastname; ?></a>, <?php echo $title; ?>, <a href="tel:+1-<?php echo $phone; ?>" rel="nofollow" ><?php echo $phone; ?></a></span><br />

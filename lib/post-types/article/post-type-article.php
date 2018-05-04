@@ -25,13 +25,19 @@ class Post_Type_Article {
 
 		add_action( 'wp_head', array( $this, 'add_social_metadata' ), 1 );
 
+		add_action( 'edit_form_after_title', array( $this, 'add_mediaform' ) );
+
+		add_action ( 'save_post_article', array( $this, 'save_mediaform' ) );
+
 	}
 
 	protected function add_filters() {
 
 		add_filter( 'language_attributes', array( $this, 'add_opengraph' ), 10, 2 );
 
-		add_filter( 'the_content', array( $this, 'add_socialbuttons' ) );
+		add_filter( 'the_content', array( $this, 'add_socialbuttons' ), 12 );
+
+		add_filter( 'the_content', array( $this, 'add_mediacontact' ), 11 );
 
 	}
 
@@ -51,7 +57,7 @@ class Post_Type_Article {
 
 		if ( is_singular( 'article' ) ) {
 
-			remove_filter( 'the_content', array( $this, 'add_socialbuttons' ) );
+			remove_filter( 'the_content', array( $this, 'add_socialbuttons' ), 12 );
 
 			include_once get_plugin_dir_path( 'lib/classes/class-article-factory.php' );
 
@@ -114,6 +120,135 @@ class Post_Type_Article {
 			include get_plugin_dir_path( 'lib/displays/social/metadata/metadata.php' );
 
 		} // End if
+
+	}
+
+	public function add_mediacontact( $content ) {
+
+		if ( is_singular( 'article' ) ) {
+
+			remove_filter( 'the_content', array( $this, 'add_mediacontact' ), 11 );
+
+			$post_id = \get_the_ID();
+
+			$mediacontact = '<span class="media-contact"><span class="media">Media Contact</span>:<br/>';		
+
+			for ( $i=1; $i<6; $i++ ) {
+
+				$firstname = get_post_meta( $post_id, '_firstname_' . $i, true );
+
+				if( ! empty( $firstname ) ) {
+
+					$lastname = get_post_meta( $post_id, '_lastname_' . $i, true );
+			
+					$title = get_post_meta( $post_id, '_title_' . $i, true );
+			
+					$email = get_post_meta( $post_id, '_email_' . $i, true );
+			
+					$phone = get_post_meta( $post_id, '_phone_' . $i, true );
+					
+					ob_start();
+
+					include get_plugin_dir_path( 'lib/displays/contact/media/media-contact.php' );
+
+					$mediacontact .= ob_get_clean();
+
+				}
+
+			}
+
+			$mediacontact .= '</span>';
+
+			$content = $content . $mediacontact;
+
+		}
+
+		return $content;
+
+	}
+
+	public function add_mediaform( $post ) {
+
+		if( 'article' === $post->post_type ) {
+
+			wp_nonce_field( 'save-mediaform', 'media_contact' );
+
+			echo '<h2>Media Contacts</h2><style> .hidden-media {display:none;}</style>';
+
+			for($i = 1; $i < 6; $i++ ) {
+				
+				$firstname = get_post_meta( $post->ID, '_firstname_' . $i, true );
+
+				$lastname = get_post_meta( $post->ID, '_lastname_' . $i, true );
+		
+				$title = get_post_meta( $post->ID, '_title_' . $i, true );
+		
+				$email = get_post_meta( $post->ID, '_email_' . $i, true );
+		
+				$phone = get_post_meta( $post->ID, '_phone_' . $i, true );
+
+				$class = ( $i === 1 || ! empty( $firstname ) ) ? '' : 'hidden-media';
+
+				include get_plugin_dir_path( 'lib/displays/contact/media/media-form.php' );
+
+			}
+
+			echo '<button class="add-media">Add Contact</button>';
+
+			echo '<script>';
+
+			include get_plugin_dir_path( 'lib/js/article.js' );
+
+			echo '</script>';
+
+		}
+
+	}
+
+
+	public function save_mediaform( $post_id ) {
+
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			
+			return;
+			
+		}
+
+		if ( ! isset( $_POST['media_contact'] ) || ! wp_verify_nonce( $_POST['media_contact'], 'save-mediaform' ) ) {
+		
+		   return;
+		
+		} 
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			
+			return;
+
+		}
+		
+		for ( $i=1; $i<6; $i++ ) {
+			
+			$media_keys = array(
+				'_firstname_' .$i,
+				'_lastname_' .$i,
+				'_title_' .$i,
+				'_email_' .$i,
+				'_phone_' .$i,
+			);
+
+			foreach ( $media_keys as $index => $key ) {
+
+				if ( empty( $_POST[ $key ] ) ){
+
+					$value = $_POST[ $key ];
+		 
+					update_post_meta( $post_id, $key, $value );
+		
+				}
+
+			}
+
+		}
 
 	}
 
