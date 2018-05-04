@@ -169,39 +169,63 @@ class Post_Type_Article {
 
 	public function add_mediaform( $post ) {
 
-		echo '<h2>Media Contacts</h2><style> .hidden-media {display:none;}</style>';
+		if( 'article' === $post->post_type ) {
 
-		for($i = 1; $i < 6; $i++ ) {
-			
-			$firstname = get_post_meta( $post->ID, '_firstname_' . $i, true );
+			wp_nonce_field( 'save-mediaform', 'media_contact' );
 
-			$lastname = get_post_meta( $post->ID, '_lastname_' . $i, true );
-	
-			$title = get_post_meta( $post->ID, '_title_' . $i, true );
-	
-			$email = get_post_meta( $post->ID, '_email_' . $i, true );
-	
-			$phone = get_post_meta( $post->ID, '_phone_' . $i, true );
+			echo '<h2>Media Contacts</h2><style> .hidden-media {display:none;}</style>';
 
-			$class = ( $i === 1 || ! empty( $firstname ) ) ? '' : 'hidden-media';
+			for($i = 1; $i < 6; $i++ ) {
+				
+				$firstname = get_post_meta( $post->ID, '_firstname_' . $i, true );
 
-			include get_plugin_dir_path( 'lib/displays/contact/media/media-form.php' );
+				$lastname = get_post_meta( $post->ID, '_lastname_' . $i, true );
+		
+				$title = get_post_meta( $post->ID, '_title_' . $i, true );
+		
+				$email = get_post_meta( $post->ID, '_email_' . $i, true );
+		
+				$phone = get_post_meta( $post->ID, '_phone_' . $i, true );
+
+				$class = ( $i === 1 || ! empty( $firstname ) ) ? '' : 'hidden-media';
+
+				include get_plugin_dir_path( 'lib/displays/contact/media/media-form.php' );
+
+			}
+
+			echo '<button class="add-media">Add Contact</button>';
+
+			echo '<script>';
+
+			include get_plugin_dir_path( 'lib/js/article.js' );
+
+			echo '</script>';
 
 		}
-
-		echo '<button class="add-media">Add Contact</button>';
-
-		echo '<script>';
-
-		include get_plugin_dir_path( 'lib/js/article.js' );
-
-		echo '</script>';
 
 	}
 
 
 	public function save_mediaform( $post_id ) {
 
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			
+			return;
+			
+		}
+
+		if ( ! isset( $_POST['media_contact'] ) || ! wp_verify_nonce( $_POST['media_contact'], 'save-mediaform' ) ) {
+		
+		   return;
+		
+		} 
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			
+			return;
+
+		}
+		
 		for ( $i=1; $i<6; $i++ ) {
 			
 			$media_keys = array(
